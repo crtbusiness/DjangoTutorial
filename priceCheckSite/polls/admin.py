@@ -1,4 +1,10 @@
 from django.contrib import admin
 from .models import Question
 
-admin.site.register(Question) #Allows admin page to interact with Question objects
+class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {"fields": ["question_text"]}),
+        ("Date information", {"fields": ["pub_date"]}),
+    ]
+
+admin.site.register(Question, QuestionAdmin) #Allows admin page to interact with Question objects
