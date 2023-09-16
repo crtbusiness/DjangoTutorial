@@ -1,6 +1,7 @@
 import datetime
 from django.db import models
 from django.utils import timezone
+from django.contrib import admin
 
 
 class Question(models.Model):
@@ -10,6 +11,12 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text #Database returns human-readable info with this function
     
+    @admin.display(
+        boolean=True,
+        ordering="pub_date",
+        description="Published recently?",
+    )
+
     def was_published_recently(self):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now #This should check if the time is in the future
@@ -17,6 +24,8 @@ class Question(models.Model):
 #Field classes (e.g. Charfield or DateTimeField) tell Django what type of data each field holds
 #Database will use the variable name as a column name in the DB
 #We can also use an optional first-position argument to name our fields such as with pub_date
+
+    
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
